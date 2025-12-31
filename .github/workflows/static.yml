@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --deep-blue: #0a192f;
+            --accent-pink: #ff4d6d;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 85%;
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: 500px;
+            border: 4px solid var(--gold);
+        }
+
+        .step { display: none; animation: slideUp 0.6s ease-out; }
+        .active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { color: var(--deep-blue); margin-bottom: 10px; }
+        
+        /* Interactive Gift */
+        .gift-svg { width: 120px; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); }
+        .gift-svg:hover { transform: rotate(-5deg) scale(1.1); }
+
+        /* Polaroid Cards */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
+        .polaroid {
+            background: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: rotate(-2deg);
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .inner-card {
+            background: #eee;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: transparent;
+        }
+        .polaroid.revealed { transform: rotate(0deg) scale(1.05); z-index: 10; }
+        .polaroid.revealed .inner-card { color: var(--accent-pink); background: #fff; }
+
+        /* Buttons */
+        .btn {
+            background: var(--deep-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Confetti Effect */
+        #canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+        .letter-box {
+            background: #fff9e6;
+            padding: 20px;
+            border-left: 5px solid var(--gold);
+            text-align: left;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <canvas id="canvas"></canvas>
+
+    <div id="step1" class="step active">
+        <h2>2026 is here! ✨</h2>
+        <p>I have a tiny surprise for you to start the year...</p>
+        <div style="margin-top: 40px;">
+            <p style="font-size: 12px; color: var(--accent-pink);">TAP TO UNWRAP</p>
+            <div class="gift-svg" onclick="nextStep(2)">🎁</div>
+        </div>
+    </div>
+
+    <div id="step2" class="step">
+        <h1 style="font-size: 50px; margin: 0;">🎇</h1>
+        <h2>A New Chapter!</h2>
+        <p>Before we step into 2026, I wanted to say...</p>
+        <button class="btn" onclick="nextStep(3)">Click to See</button>
+    </div>
+
+    <div id="step3" class="step">
+        <h3>My 2026 Wishes...</h3>
+        <div class="grid">
+            <div class="polaroid" onclick="reveal(this)">
+                <div class="inner-card">Health</div>
+            </div>
+            <div class="polaroid" onclick="reveal(this)">
+                <div class="inner-card">Joy</div>
+            </div>
+            <div class="polaroid" onclick="reveal(this)">
+                <div class="inner-card">Success</div>
+            </div>
+            <div class="polaroid" onclick="reveal(this)">
+                <div class="inner-card">Us ❤️</div>
+            </div>
+        </div>
+        <button id="nextBtn" class="btn" style="display:none;" onclick="nextStep(4)">Read My Letter</button>
+    </div>
+
+    <div id="step4" class="step">
+        <h2 style="color: var(--accent-pink);">Happy New Year! 🥂</h2>
+        <div class="letter-box">
+            Dear Cutiepie,<br><br>
+            As we enter 2026, I just wanted to thank you for being the best part of my past year. 
+            May this year bring you endless laughter, new adventures, and all the happiness you deserve.<br><br>
+            I'm so excited to spend another 365 days with you!<br><br>
+            <b>Love always. ✨</b>
+        </div>
+        <p style="font-size: 2em; margin-top: 15px;">🎆🎊🥂</p>
+    </div>
+</div>
+
+<script>
+    let count = 0;
+    function nextStep(s) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step' + s).classList.add('active');
+        if(s === 4) startConfetti();
+    }
+
+    function reveal(el) {
+        if(!el.classList.contains('revealed')) {
+            el.classList.add('revealed');
+            count++;
+            if(count === 4) document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+    }
+
+    // Simple Confetti Logic
+    function startConfetti() {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 380;
+        canvas.height = 500;
+        let particles = [];
+        for(let i=0; i<100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                c: '#' + Math.floor(Math.random()*16777215).toString(16),
+                s: Math.random() * 5 + 2,
+                v: Math.random() * 3 + 1
+            });
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.fillStyle = p.c;
+                ctx.fillRect(p.x, p.y, p.s, p.s);
+                p.y += p.v;
+                if(p.y > canvas.height) p.y = 0;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+</script>
+
+</body>
+</html>
